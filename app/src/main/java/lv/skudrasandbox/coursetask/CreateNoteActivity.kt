@@ -25,6 +25,15 @@ class CreateNoteActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_note)
         val type = intent.getStringExtra("type")
+
+        if (type == "text_note") {
+            editTextTextMultiLine.visibility = View.VISIBLE
+        } else if (type == "checkbox_list") {
+            checkboxListRecyclerView.visibility = View.VISIBLE
+        } else if (type == "image_note") {
+            imageView.visibility = View.VISIBLE
+        }
+
         cancelButton.setOnClickListener { finish() }
 
         adapter = CheckboxListAdapter(checkboxList)
