@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">CourseTask</string>
+    <string name="note_added_text">Piezīme pievienota</string>
+    <string name="note_deleted_text">Piezīme dzēsta</string>
+    <string name="cancel_button">Atcelt</string>
+    <string name="save_button">Saglabāt</string>
+    <string name="add_button">Pievienot</string>
+    <string name="colorYellow">Dzeltena</string>
+    <string name="colorRed">Sarkana</string>
+    <string name="colorGreen">Zaļa</string>
+    <string name="colorBlue">Zila</string>
+    <string name="colorPink">Rozā</string>
+    <string name="buttonChangeImportance">Mainīt svarīgumu</string>
+    <string name="buttonChangeColor">Mainīt krāsu</string>
+</resources>

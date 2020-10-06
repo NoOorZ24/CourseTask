@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">CourseTask</string>
+    <string name="note_added_text">Note saved</string>
+    <string name="note_deleted_text">Note deleted</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="add_button">Add</string>
+    <string name="save_button">Save</string>
+    <string name="colorYellow">Yellow</string>
+    <string name="colorRed">Red</string>
+    <string name="colorGreen">Green</string>
+    <string name="colorBlue">Blue</string>
+    <string name="colorPink">Pink</string>
+    <string name="buttonChangeImportance">Change importance</string>
+    <string name="buttonChangeColor">Change color</string>
+</resources>
