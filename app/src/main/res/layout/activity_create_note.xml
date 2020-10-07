@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="lv.skudrasandbox.coursetask.CreateNoteActivity">
+    tools:context="lv.skudrasandbox.coursetask.screens.detail.NoteDetailActivity">
 
     <androidx.cardview.widget.CardView
         android:id="@+id/editNoteCard"
@@ -13,7 +13,7 @@
         android:layout_margin="8dp"
         android:elevation="4dp"
         android:translationZ="4dp"
-        app:cardBackgroundColor="@color/noteLightYellow"
+        app:cardBackgroundColor="#F1E8BB"
         app:cardCornerRadius="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -25,7 +25,7 @@
             android:layout_height="match_parent">
 
             <EditText
-                android:id="@+id/editTextTextPersonName2"
+                android:id="@+id/editNoteTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
@@ -48,7 +48,7 @@
                 android:backgroundTint="#E4CC8D"
                 android:text="@string/cancel_button"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toStartOf="@+id/button2" />
+                app:layout_constraintEnd_toStartOf="@+id/saveNoteButton" />
 
             <Button
                 android:id="@+id/addItemButton"
@@ -58,11 +58,12 @@
                 android:layout_marginBottom="8dp"
                 android:backgroundTint="#E4CC8D"
                 android:text="@string/add_button"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />
 
             <Button
-                android:id="@+id/button2"
+                android:id="@+id/saveNoteButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginEnd="16dp"
@@ -107,17 +108,16 @@
                 android:layout_marginBottom="16dp"
                 android:visibility="gone"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintBottom_toTopOf="@+id/button2"
+                app:layout_constraintBottom_toTopOf="@+id/saveNoteButton"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2"
-                app:layout_constraintVertical_bias="1.0" />
+                app:layout_constraintTop_toBottomOf="@+id/editNoteTitle"
+                tools:listitem="@layout/checkbox_list_item" />
 
             <EditText
                 android:id="@+id/editTextTextMultiLine"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="16dp"
                 android:layout_marginEnd="8dp"
@@ -125,11 +125,12 @@
                 android:ems="10"
                 android:gravity="start|top"
                 android:inputType="textMultiLine"
+                android:textSize="14sp"
                 android:visibility="gone"
                 app:layout_constraintBottom_toTopOf="@+id/cancelButton"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2" />
+                app:layout_constraintTop_toBottomOf="@+id/editNoteTitle" />
 
             <ImageView
                 android:id="@+id/imageView"
@@ -143,7 +144,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/cancelButton"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2"
+                app:layout_constraintTop_toBottomOf="@+id/editNoteTitle"
                 tools:srcCompat="@tools:sample/avatars" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

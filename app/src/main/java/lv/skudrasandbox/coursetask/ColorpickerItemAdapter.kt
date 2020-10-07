@@ -9,6 +9,7 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import kotlinx.android.synthetic.main.colorpicker_list_item.view.*
+import lv.skudrasandbox.coursetask.items.ColorpickerItem
 
 class ColorpickerItemAdapter(context: Context, items: List<ColorpickerItem>) :
     ArrayAdapter<ColorpickerItem>(context, 0, items) {

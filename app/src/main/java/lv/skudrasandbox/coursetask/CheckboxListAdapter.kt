@@ -3,9 +3,9 @@ package lv.skudrasandbox.coursetask
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.checkbox_list_item.view.*
+import lv.skudrasandbox.coursetask.items.CheckboxItem
 
 class CheckboxListAdapter(private val items: MutableList<CheckboxItem>) :
     RecyclerView.Adapter<CheckboxListAdapter.CheckboxListViewHolder>() {
@@ -21,12 +21,12 @@ class CheckboxListAdapter(private val items: MutableList<CheckboxItem>) :
     override fun getItemCount() = items.size
     // bind item to view holder
     override fun onBindViewHolder(holder: CheckboxListViewHolder, position: Int) {
-//        val item = items[position]
-//        val context = holder.itemView.context
-//        holder.itemView.itemDeleteButton.setOnClickListener {
-//            Toast.makeText(context, "${item.text} was removed", Toast.LENGTH_SHORT).show()
-//            items.removeAt(position)
-//            notifyDataSetChanged()
-//        }
+        val item = items[position]
+        val context = holder.itemView.context
+        holder.itemView.deleteListItemButton.setOnClickListener {
+            items.removeAt(position)
+            notifyDataSetChanged()
+        }
+
     }
 }
