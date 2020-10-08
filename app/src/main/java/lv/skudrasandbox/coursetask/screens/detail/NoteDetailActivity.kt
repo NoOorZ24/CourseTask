@@ -1,17 +1,22 @@
 package lv.skudrasandbox.coursetask.screens.detail
 
-import androidx.appcompat.app.AppCompatActivity
-import android.os.Bundle
-import androidx.appcompat.widget.PopupMenu
-import kotlinx.android.synthetic.main.activity_create_note.*
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
+import android.database.Cursor
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.net.Uri
+import android.os.Bundle
+import android.provider.MediaStore
 import android.view.View
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.PopupMenu
+import androidx.camera.core.ImageCapture
 import androidx.lifecycle.Observer
+import kotlinx.android.synthetic.main.activity_create_note.*
 import lv.skudrasandbox.coursetask.CheckboxListAdapter
 import lv.skudrasandbox.coursetask.ColorpickerItemAdapter
 import lv.skudrasandbox.coursetask.R
@@ -19,7 +24,9 @@ import lv.skudrasandbox.coursetask.api.Resource
 import lv.skudrasandbox.coursetask.items.CheckboxItem
 import lv.skudrasandbox.coursetask.items.ColorpickerItem
 import lv.skudrasandbox.coursetask.items.NoteData
+import lv.skudrasandbox.coursetask.CameraActivity
 import lv.skudrasandbox.coursetask.screens.main.MainActivity.Companion.EXTRA_ID
+
 
 class NoteDetailActivity : AppCompatActivity() {
 
@@ -42,11 +49,13 @@ class NoteDetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_note)
-
         val id = intent.getStringExtra(EXTRA_ID).orEmpty()
         var type = intent.getStringExtra("type").orEmpty()
 
-
+        getImageLayout.visibility = View.GONE;
+        buttonTakeImage.visibility = View.GONE;
+        buttonUploadImage.visibility = View.GONE;
+        imageView.visibility = View.GONE;
 
         if (id.isNotEmpty()) {
             viewModel.getNote(id).observe(this, Observer { resource ->
@@ -55,7 +64,7 @@ class NoteDetailActivity : AppCompatActivity() {
                         editNoteTitle.setText(resource.data.title)
                         enableInputsByType(resource.data.type)
                         editTextTextMultiLine.setText(resource.data.json)
-                        editNoteCard.setCardBackgroundColor(Color.parseColor(resource.data.json))
+                        editNoteCard.setCardBackgroundColor(Color.parseColor(resource.data.color))
                     }
                     is Resource.Error -> showError(resource.message.orEmpty())
                 }
@@ -103,7 +112,6 @@ class NoteDetailActivity : AppCompatActivity() {
                     }
                 })
             }
-
         }
 
         enableInputsByType(type)
@@ -120,24 +128,34 @@ class NoteDetailActivity : AppCompatActivity() {
             showOptionMenu(popupMenu)
         }
 
-//        saveNoteButton.setOnClickListener { storeNote(type) }
-
         addItemButton.setOnClickListener { addCheckboxListElement() }
 
         addCheckboxListElement()
+
+        buttonTakeImage.setOnClickListener { takePictureCameraX() }
+        buttonUploadImage.setOnClickListener { selectImage() }
+    }
+
+    private fun takePictureCameraX() {
+        val intent = Intent(this, CameraActivity::class.java)
+        startActivityForResult(intent, Companion.REQUEST_IMAGE_CAPTURE_CAMERAX)
     }
 
     private fun sendSms(message: String) {
-        val intent = Intent(Intent.ACTION_SEND).apply {
-            data = Uri.parse("smsto:")  // This ensures only SMS apps respond
-            putExtra("sms_body", message)
+        val sendIntent = Intent(Intent.ACTION_SENDTO).apply {
+            data = Uri.parse("mailto:")
+            putExtra(Intent.EXTRA_EMAIL, arrayOf("email@email.lv"))
+            putExtra(Intent.EXTRA_SUBJECT, "email subject")
+            putExtra(Intent.EXTRA_TEXT, "Some email random text ")
         }
-        if (intent.resolveActivity(packageManager) != null) {
-            startActivity(intent)
+
+        if (sendIntent.resolveActivity(packageManager) != null) {
+            startActivity(sendIntent)
         } else {
             Toast.makeText(this, "No app to handle this!", Toast.LENGTH_SHORT).show()
         }
     }
+
 
     private fun enableInputsByType(type: String) {
         when (type) {
@@ -149,17 +167,13 @@ class NoteDetailActivity : AppCompatActivity() {
                 addItemButton.visibility = View.VISIBLE
             }
             "image_note" -> {
-                imageView.visibility = View.VISIBLE
+                getImageLayout.visibility = View.VISIBLE;
+                buttonTakeImage.visibility = View.VISIBLE;
+                buttonUploadImage.visibility = View.VISIBLE;
+                imageView.visibility = View.VISIBLE;
             }
         }
     }
-
-//    private fun storeNote(type: String) {
-//        val jsonEncodedData = checkboxList.toString();
-//        NoteData(
-//            "", "title sampleee", type, jsonEncodedData, editNoteCard.cardBackgroundColor.toString(), (importantFlagStar.visibility == View.VISIBLE)
-//        )
-//    }
 
     private fun showOptionMenu(popupMenu: PopupMenu) {
         popupMenu.setOnMenuItemClickListener { item ->
@@ -204,7 +218,7 @@ class NoteDetailActivity : AppCompatActivity() {
     }
 
 
-    private fun addCheckboxListElement(text: String  = "", is_checked: Boolean = false) {
+    private fun addCheckboxListElement(text: String = "", is_checked: Boolean = false) {
         checkboxList.add(0, CheckboxItem(text, is_checked))
         adapter.notifyDataSetChanged()
     }
@@ -212,5 +226,28 @@ class NoteDetailActivity : AppCompatActivity() {
     private fun showError(message: String) {
         println(message)
         Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
+    }
+    val PICK_IMAGE = 1235
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PICK_IMAGE && resultCode == Activity.RESULT_OK) {
+            val uri = data!!.extras!!.getParcelable<Uri>("uri")
+            imageView.setImageURI(uri)
+        }
+        if (requestCode == REQUEST_IMAGE_CAPTURE_CAMERAX && resultCode == Activity.RESULT_OK) {
+            val uri = data!!.extras!!.getParcelable<Uri>("uri")
+            imageView.setImageURI(uri)
+        }
+    }
+
+    fun selectImage() {
+        val intent = Intent()
+        intent.type = "image/*"
+        intent.action = Intent.ACTION_GET_CONTENT
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), PICK_IMAGE)
+    }
+
+    companion object {
+        const val REQUEST_IMAGE_CAPTURE_CAMERAX = 2
     }
 }

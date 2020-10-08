@@ -1,11 +1,14 @@
 package lv.skudrasandbox.coursetask.screens.main
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
 import kotlinx.android.synthetic.main.activity_main.*
 import lv.skudrasandbox.coursetask.NoteRecyclerAdapter
@@ -34,7 +37,6 @@ class MainActivity : AppCompatActivity(), AdapterClickListener {
         mainNoteRecyclerView.adapter = adapter
 
         refresh()
-//        mainButtonAdd.setOnClickListener { appendItem() }
         refreshLayout.setOnRefreshListener { refresh() }
     }
 

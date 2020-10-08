@@ -30,7 +30,7 @@ class NoteRecyclerAdapter(
         val context = holder.itemView.context
         holder.itemView.noteViewTitle.text = note.title
         holder.itemView.importanceFlagImage.visibility = if (note.is_important) View.VISIBLE else View.GONE
-        holder.itemView.noteCardView.setBackgroundColor(Color.parseColor(note.color))
+        holder.itemView.noteCardView.setCardBackgroundColor(Color.parseColor(note.color))
         holder.itemView.noteViewTextLines.text = note.json
 
         holder.itemView.setOnClickListener {

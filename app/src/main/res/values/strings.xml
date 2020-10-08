@@ -12,4 +12,6 @@
     <string name="colorPink">Pink</string>
     <string name="buttonChangeImportance">Change importance</string>
     <string name="buttonChangeColor">Change color</string>
+    <string name="button_take_image">Take image</string>
+    <string name="button_upload_image">Upload image</string>
 </resources>

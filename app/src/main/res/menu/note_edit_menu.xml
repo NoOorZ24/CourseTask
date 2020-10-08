@@ -9,7 +9,7 @@
         android:title="@string/buttonChangeImportance" />
     <item
         android:id="@+id/send_text_as_sms"
-        android:title="SMS" />
+        android:title="Email" />
 
 
 </menu>
